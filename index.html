@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful Star History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a26;
+      --border: #2a2a3a;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888a0;
+      --text-muted: #55556a;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-orange: #f97316;
+      --gradient-primary: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+      --gradient-subtle: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-glow .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .bg-glow .orb:nth-child(1) {
+      width: 600px;
+      height: 600px;
+      background: var(--accent-purple);
+      top: -200px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-glow .orb:nth-child(2) {
+      width: 500px;
+      height: 500px;
+      background: var(--accent-pink);
+      top: 50%;
+      right: -150px;
+      animation-delay: -7s;
+    }
+
+    .bg-glow .orb:nth-child(3) {
+      width: 400px;
+      height: 400px;
+      background: var(--accent-blue);
+      bottom: -100px;
+      left: 30%;
+      animation-delay: -14s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -30px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.7);
+      border-bottom: 1px solid rgba(42, 42, 58, 0.5);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .logo-icon {
+      font-size: 1.4rem;
+    }
+
+    .logo span {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      color: var(--accent-purple);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-purple);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 550px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Search Section */
+    .search-container {
+      width: 100%;
+      max-width: 700px;
+      animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0.5rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-box .icon {
+      padding: 0 0.75rem 0 1rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      padding: 0.75rem 0;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-box button {
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .search-box button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    .search-box button:active {
+      transform: scale(0.98);
+    }
+
+    .search-hint {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .search-hint code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(168, 85, 247, 0.1);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+
+    /* Recent Repos / Quick Access */
+    .quick-repos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+
+    .quick-repo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .quick-repo:hover {
+      border-color: var(--accent-purple);
+      color: var(--text-primary);
+      background: rgba(168, 85, 247, 0.05);
+    }
+
+    .quick-repo .star-icon {
+      font-size: 0.7rem;
+    }
+
+    /* Features Section */
+    .features {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem 8rem;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .features-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .features-header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(168, 85, 247, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-icon.purple { background: rgba(168, 85, 247, 0.15); }
+    .feature-icon.pink { background: rgba(236, 72, 153, 0.15); }
+    .feature-icon.blue { background: rgba(59, 130, 246, 0.15); }
+    .feature-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+    .feature-icon.orange { background: rgba(249, 115, 22, 0.15); }
+    .feature-icon.green { background: rgba(34, 197, 94, 0.15); }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Preview Chart Section */
+    .preview-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+    }
+
+    .preview-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .preview-repo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .preview-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .preview-repo-name {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .preview-repo-stars {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .chart-container {
+      width: 100%;
+      height: 300px;
+      position: relative;
+    }
+
+    .chart-container canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Stats row below chart */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--accent-purple);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0.75rem 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 7rem 1.5rem 3rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .search-box {
+        flex-direction: column;
+        padding: 0.75rem;
+      }
+
+      .search-box .icon {
+        display: none;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.5rem;
+        text-align: center;
+      }
+
+      .search-box button {
+        width: 100%;
+        padding: 0.85rem;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="bg-glow">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon">&#9733;</span>
+        <span>Beautiful Star History</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#preview">Preview</a>
+        <a href="https://github.com" target="_blank" class="nav-github">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Open source &amp; free forever
+    </div>
+
+    <h1>
+      GitHub stars,<br>
+      <span class="gradient-text">beautifully visualized.</span>
+    </h1>
+
+    <p>
+      Explore the growth story behind any GitHub repository with stunning charts, rich analytics, and insights you won't find anywhere else.
+    </p>
+
+    <div class="search-container">
+      <div class="search-box">
+        <div class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <input type="text" id="repo-input" placeholder="owner/repo (e.g. facebook/react)" autocomplete="off">
+        <button id="search-btn">View Star History</button>
+      </div>
+      <p class="search-hint">
+        Try <code>vercel/next.js</code>, <code>denoland/deno</code>, or <code>astral-sh/ruff</code>
+      </p>
+    </div>
+
+    <div class="quick-repos">
+      <a class="quick-repo" data-repo="facebook/react">
+        <span class="star-icon">&#9733;</span> react
+      </a>
+      <a class="quick-repo" data-repo="vuejs/vue">
+        <span class="star-icon">&#9733;</span> vue
+      </a>
+      <a class="quick-repo" data-repo="denoland/deno">
+        <span class="star-icon">&#9733;</span> deno
+      </a>
+      <a class="quick-repo" data-repo="vercel/next.js">
+        <span class="star-icon">&#9733;</span> next.js
+      </a>
+      <a class="quick-repo" data-repo="tailwindlabs/tailwindcss">
+        <span class="star-icon">&#9733;</span> tailwindcss
+      </a>
+      <a class="quick-repo" data-repo="astral-sh/ruff">
+        <span class="star-icon">&#9733;</span> ruff
+      </a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="features-header">
+      <h2>More than just a line chart</h2>
+      <p>Beautiful analytics that tell the full story behind a repo's growth.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon purple">&#10024;</div>
+        <h3>Gorgeous Charts</h3>
+        <p>Smooth gradient-filled area charts with interactive tooltips, zoom, and pan. Dark-mode native and retina-ready.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon pink">&#128200;</div>
+        <h3>Growth Analytics</h3>
+        <p>Weekly, monthly, and yearly growth rates. See velocity changes and identify viral moments in a repo's history.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon blue">&#128202;</div>
+        <h3>Compare Repos</h3>
+        <p>Overlay multiple repos on a single chart. Compare growth trajectories side by side with distinct color coding.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon cyan">&#9889;</div>
+        <h3>Milestone Markers</h3>
+        <p>Automatic detection of star surges. See when a repo hit Hacker News, got trending, or crossed star milestones.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">&#128247;</div>
+        <h3>Export &amp; Share</h3>
+        <p>Download high-res PNGs, SVGs, or share interactive links. Perfect for READMEs, blog posts, and presentations.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">&#128279;</div>
+        <h3>Embed Anywhere</h3>
+        <p>Drop a responsive iframe into your README or website. Auto-updating charts that always show the latest data.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preview Chart -->
+  <section class="preview-section" id="preview">
+    <div class="preview-card">
+      <div class="preview-header">
+        <div class="preview-repo">
+          <div class="preview-avatar">R</div>
+          <div>
+            <div class="preview-repo-name">facebook/react</div>
+            <div class="preview-repo-stars">&#9733; 228,000+ stars</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="preview-chart"></canvas>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">228k</div>
+          <div class="stat-label">Total Stars</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">+1.2k</div>
+          <div class="stat-label">This Month</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2013</div>
+          <div class="stat-label">First Star</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">11 yrs</div>
+          <div class="stat-label">Growth Span</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Built with &#9829; &mdash; Inspired by <a href="https://www.star-history.com/" target="_blank">star-history.com</a>
+    </p>
+  </footer>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+  <script>
+    // Demo data: approximate React star history
+    const labels = [
+      'May 2013', 'Jan 2014', 'Jan 2015', 'Jan 2016', 'Jan 2017',
+      'Jan 2018', 'Jan 2019', 'Jan 2020', 'Jan 2021', 'Jan 2022',
+      'Jan 2023', 'Jan 2024', 'Jan 2025', 'Mar 2026'
+    ];
+    const data = [
+      0, 8000, 25000, 48000, 68000,
+      100000, 130000, 145000, 168000, 185000,
+      200000, 212000, 222000, 228000
+    ];
+
+    const ctx = document.getElementById('preview-chart').getContext('2d');
+
+    const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
+    gradient.addColorStop(0, 'rgba(168, 85, 247, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(236, 72, 153, 0.8)');
+    gradient.addColorStop(1, 'rgba(249, 115, 22, 0.8)');
+
+    const fillGradient = ctx.createLinearGradient(0, 0, 0, 300);
+    fillGradient.addColorStop(0, 'rgba(168, 85, 247, 0.3)');
+    fillGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Stars',
+          data,
+          borderColor: gradient,
+          borderWidth: 3,
+          backgroundColor: fillGradient,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: '#a855f7',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(26, 26, 38, 0.95)',
+            titleColor: '#f0f0f5',
+            bodyColor: '#8888a0',
+            borderColor: 'rgba(168, 85, 247, 0.3)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            displayColors: false,
+            callbacks: {
+              label: function(context) {
+                return `${context.parsed.y.toLocaleString()} stars`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(42, 42, 58, 0.3)' },
+            ticks: {
+              color: '#55556a',
+              font: { size: 11 },
+              maxTicksLimit: 8,
+            },
+            border: { display: false },
+          },
+          y: {
+            grid: { color: 'rgba(42, 42, 58, 0.3)' },
+            ticks: {
+              color: '#55556a',
+              font: { size: 11 },
+              callback: function(value) {
+                return (value / 1000) + 'k';
+              }
+            },
+            border: { display: false },
+          }
+        }
+      }
+    });
+
+    // Quick repo click
+    document.querySelectorAll('.quick-repo').forEach(el => {
+      el.addEventListener('click', () => {
+        document.getElementById('repo-input').value = el.dataset.repo;
+        document.getElementById('repo-input').focus();
+      });
+    });
+
+    // Search action (placeholder for future)
+    function handleSearch() {
+      const repo = document.getElementById('repo-input').value.trim();
+      if (repo) {
+        // Future: navigate to repo detail page
+        console.log('Searching for:', repo);
+      }
+    }
+
+    document.getElementById('search-btn').addEventListener('click', handleSearch);
+    document.getElementById('repo-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSearch();
+    });
+  </script>
+
+</body>
+</html>
