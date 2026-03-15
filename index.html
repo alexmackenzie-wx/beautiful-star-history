@@ -288,81 +288,6 @@
       font-size: 0.65rem;
     }
 
-    /* Features Section */
-    .features {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 4rem 2rem 8rem;
-    }
-
-    .features-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-
-    .features-header h2 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.02em;
-    }
-
-    .features-header p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      font-weight: 300;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      padding: 2rem;
-      transition: background 0.2s;
-    }
-
-    .feature-card:hover {
-      background: var(--bg-secondary);
-    }
-
-    .feature-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      background: var(--bg-secondary);
-    }
-
-    .feature-card h3 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .feature-card p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
     /* Preview Chart Section */
     .preview-section {
       position: relative;
@@ -532,9 +457,6 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
@@ -600,47 +522,6 @@
       <a class="quick-repo" data-repo="astral-sh/ruff">
         <span class="star-icon">&#9733;</span> ruff
       </a>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="features" id="features">
-    <div class="features-header">
-      <h2>More than just a line chart</h2>
-      <p>Beautiful analytics that tell the full story behind a repo's growth.</p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">&#10024;</div>
-        <h3>Gorgeous Charts</h3>
-        <p>Smooth gradient-filled area charts with interactive tooltips, zoom, and pan. Dark-mode native and retina-ready.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#128200;</div>
-        <h3>Growth Analytics</h3>
-        <p>Weekly, monthly, and yearly growth rates. See velocity changes and identify viral moments in a repo's history.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#128202;</div>
-        <h3>Compare Repos</h3>
-        <p>Overlay multiple repos on a single chart. Compare growth trajectories side by side with distinct color coding.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#9889;</div>
-        <h3>Milestone Markers</h3>
-        <p>Automatic detection of star surges. See when a repo hit Hacker News, got trending, or crossed star milestones.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#128247;</div>
-        <h3>Export &amp; Share</h3>
-        <p>Download high-res PNGs, SVGs, or share interactive links. Perfect for READMEs, blog posts, and presentations.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#128279;</div>
-        <h3>Embed Anywhere</h3>
-        <p>Drop a responsive iframe into your README or website. Auto-updating charts that always show the latest data.</p>
-      </div>
     </div>
   </section>
 
